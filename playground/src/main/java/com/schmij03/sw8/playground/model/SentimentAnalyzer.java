@@ -1,8 +1,6 @@
 package com.schmij03.sw8.playground.model;
 
 import java.io.IOException;
-import java.util.List;
-
 import org.slf4j.LoggerFactory;
 
 import ai.djl.Application;
@@ -15,7 +13,6 @@ import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.training.util.ProgressBar;
 import ai.djl.translate.TranslateException;
-import ai.djl.util.JsonSerializable;
 import ch.qos.logback.classic.Logger;
 
 public class SentimentAnalyzer {
