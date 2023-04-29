@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Sentiment Analysis App</h1>
+        <form id="sentiment-form">
+            <div class="form-group">
+                <label for="input-text">Enter text:</label>
+                <textarea class="form-control" id="input-text" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Analyze Sentiment</button>
+            <button type="button" class="btn btn-secondary" id="reset-button">Reset</button>
+        </form>
+        <div class="mt-3" id="result"></div>
+    </div>
+    <script>
+        function formatResult(data) {
+            let result = '<strong>Sentiment Result:</strong><br><br><table class="table table-bordered">';
+            result += '<tr><th>Class</th><th>Probability</th></tr>';
+            data.forEach(item => {
+                result += `<tr><td>${item.className}</td><td>${item.probability.toFixed(4)}</td></tr>`;
+            });
+            result += '</table>';
+            return result;
+        }
+
+        $(document).ready(function () {
+            $('#sentiment-form').on('submit', function (e) {
+                e.preventDefault();
+                const text = $('#input-text').val();
+                $.get('/sentiment', { text }, function (data) {
+                    const parsedData = JSON.parse(data);
+                    $('#result').html(formatResult(parsedData));
+                }).fail(function () {
+                    $('#result').html('<strong>Error:</strong> Unable to analyze the sentiment.');
+                });
+            });
+
+            $('#reset-button').on('click', function () {
+                $('#input-text').val('');
+                $('#result').html('');
+            });
+        });
+    </script>
+</body>
+</html>
